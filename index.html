@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo Life Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="dashboard">
+
+    <!-- Greeting Widget -->
+    <section id="greeting-widget" aria-label="Greeting Widget">
+      <p id="greeting-text">Good Morning</p>
+      <p id="time-display">00:00</p>
+      <p id="date-display">Monday, 1 January 2025</p>
+    </section>
+
+    <!-- Focus Timer -->
+    <section id="focus-timer" aria-label="Focus Timer">
+      <p id="timer-display">25:00</p>
+      <div class="timer-controls">
+        <button id="timer-start">Start</button>
+        <button id="timer-stop">Stop</button>
+        <button id="timer-reset">Reset</button>
+      </div>
+    </section>
+
+    <!-- Todo List -->
+    <section id="todo-list" aria-label="Todo List">
+      <h2>Tasks</h2>
+      <form id="todo-form">
+        <input
+          type="text"
+          id="todo-input"
+          placeholder="Add a new task…"
+          maxlength="500"
+          aria-label="New task text"
+        />
+        <button type="submit" id="todo-add">Add</button>
+      </form>
+      <div id="todo-error" class="error-message" aria-live="polite"></div>
+      <ul id="todo-list-items" aria-label="Task list"></ul>
+    </section>
+
+    <!-- Quick Links -->
+    <section id="quick-links" aria-label="Quick Links">
+      <h2>Quick Links</h2>
+      <form id="links-form">
+        <input
+          type="text"
+          id="link-label-input"
+          placeholder="Label"
+          maxlength="100"
+          aria-label="Link label"
+        />
+        <div id="link-label-error" class="error-message" aria-live="polite"></div>
+        <input
+          type="url"
+          id="link-url-input"
+          placeholder="https://example.com"
+          aria-label="Link URL"
+        />
+        <div id="link-url-error" class="error-message" aria-live="polite"></div>
+        <button type="submit" id="link-add">Add Link</button>
+      </form>
+      <div id="links-container" aria-label="Saved links"></div>
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

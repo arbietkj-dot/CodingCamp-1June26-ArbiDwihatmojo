@@ -1,0 +1,12 @@
+{
+  "name": "todo-life-dashboard",
+  "version": "1.0.0",
+  "description": "A single-page productivity dashboard with four widgets",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "node --test tests/app.test.js"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.2"
+  }
+}
