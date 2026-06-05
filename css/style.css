@@ -1,1 +1,990 @@
 /* css/style.css — Todo Life Dashboard styles */
+
+/* ========================================
+   CSS CUSTOM PROPERTIES (THEME TOKENS)
+   ======================================== */
+
+:root {
+  /* Light mode (default) */
+  --bg-body:        #f0f4f8;
+  --bg-section:     #ffffff;
+  --bg-topbar:      #ffffff;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #666666;
+  --border-color:   #dddddd;
+  --input-bg:       #ffffff;
+  --input-border:   #cccccc;
+  --link-color:     #007bff;
+  --shadow:         rgba(0, 0, 0, 0.08);
+  --transition:     0.3s ease;
+  --bar-height:     52.95px;
+}
+
+body.dark-mode {
+  --bg-body:        #0f0f1a;
+  --bg-section:     #1a1a2e;
+  --bg-topbar:      #12121f;
+  --text-primary:   #e8e8f0;
+  --text-secondary: #aaaacc;
+  --border-color:   #2e2e4e;
+  --input-bg:       #1e1e30;
+  --input-border:   #3a3a5c;
+  --link-color:     #66aaff;
+  --shadow:         rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Ensure box-sizing is consistent across all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base styles — Mobile-first approach (320px+) */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  min-width: 320px;
+  overflow-x: hidden;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+/* ========================================
+   TOP BAR & THEME SWITCH
+   ======================================== */
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--bar-height);
+  padding: 0 1.5rem;
+  background-color: var(--bg-topbar);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.top-bar-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  transition: color var(--transition);
+}
+
+/* Fixed bottom bar housing the theme toggle */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.5rem;
+  background-color: var(--bg-topbar);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -1px 4px var(--shadow);
+  z-index: 100;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+/* Shrink the toggle inside the footer */
+.bottom-bar .theme-switch {
+  gap: 0.4rem;
+}
+
+.bottom-bar .switch-track {
+  width: 40px;
+  height: 20px;
+}
+
+.bottom-bar .switch-thumb {
+  width: 14px;
+  height: 14px;
+  top: 3px;
+  left: 3px;
+}
+
+.bottom-bar .theme-switch input:checked + .switch-track .switch-thumb {
+  transform: translateX(20px);
+}
+
+.bottom-bar .switch-icon {
+  font-size: 0.65rem;
+}
+
+.bottom-bar .switch-label {
+  font-size: 0.75rem;
+}
+
+/* Bottom padding matches footer height */
+main.dashboard {
+  padding-bottom: calc(var(--bar-height) + 10px);
+}
+
+/* The toggle label wraps everything */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Hide native checkbox */
+.theme-switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The pill-shaped track */
+.switch-track {
+  position: relative;
+  width: 56px;
+  height: 28px;
+  background-color: #ccc;
+  border-radius: 999px;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Track turns blue/indigo in dark mode */
+.theme-switch input:checked + .switch-track {
+  background-color: #3a3a8c;
+}
+
+/* Icons inside the track */
+.switch-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  line-height: 1;
+  transition: opacity 0.3s ease;
+}
+
+.switch-icon--light {
+  left: 5px;
+  opacity: 1;
+}
+
+.switch-icon--dark {
+  right: 5px;
+  opacity: 0.4;
+}
+
+/* When checked (dark mode), flip icon opacities */
+.theme-switch input:checked + .switch-track .switch-icon--light {
+  opacity: 0.4;
+}
+
+.theme-switch input:checked + .switch-track .switch-icon--dark {
+  opacity: 1;
+}
+
+/* The sliding thumb */
+.switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+/* Slide thumb to the right when checked */
+.theme-switch input:checked + .switch-track .switch-thumb {
+  transform: translateX(28px);
+}
+
+/* Focus ring for accessibility */
+.theme-switch input:focus-visible + .switch-track {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.switch-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: color var(--transition);
+  white-space: nowrap;
+}
+
+main.dashboard {
+  width: 100%;
+  max-width: 100%;
+  padding: 1rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  overflow-x: hidden;
+}
+
+/* Ensure all sections don't overflow */
+section {
+  width: 100%;
+  max-width: 100%;
+  padding: 1.25rem 1.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow-x: hidden;
+  background-color: var(--section-bg, var(--bg-section));
+  color: var(--text-primary);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px var(--shadow);
+  border: 3px solid var(--section-accent, transparent);
+  transition: background-color var(--transition), color var(--transition),
+              box-shadow var(--transition), border-color var(--transition);
+}
+
+/* Ensure form elements are responsive */
+input,
+button,
+select,
+textarea {
+  max-width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Ensure buttons have minimum touch target size (44x44px for accessibility) */
+button {
+  min-height: 44px;
+  min-width: 44px;
+  cursor: pointer;
+  border: 3px solid var(--btn-accent, #007bff);
+  background-color: var(--btn-bg, #007bff);
+  color: var(--btn-text, white);
+  border-radius: 16px;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s ease, transform 0.1s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+}
+
+button:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.22);
+  transform: translateY(-2px);
+}
+
+button:active {
+  filter: brightness(0.9);
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Ripple effect */
+button .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple-anim 0.5s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-anim {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Timer button states */
+#timer-start.running {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+#timer-start.running:hover {
+  background-color: #1e7e34;
+}
+
+#timer-stop {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+#timer-stop:hover {
+  background-color: #e0a800;
+}
+
+#timer-reset {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+#timer-reset:hover {
+  background-color: #545b62;
+}
+
+/* Forms — stack vertically on mobile */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+input:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Date display in dark mode */
+#date-display {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  transition: color var(--transition);
+}
+
+/* Error messages */
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  min-height: 1.5rem;
+}
+
+/* Greeting Widget */
+#greeting-widget {
+  text-align: center;
+}
+
+#greeting-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+#time-display {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+#date-display {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  transition: color var(--transition);
+}
+
+/* Name input form inside greeting widget */
+.name-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.name-form input[type="text"] {
+  width: auto;
+  max-width: 200px;
+  flex: 1 1 140px;
+  text-align: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.name-form button {
+  min-height: 36px;
+  min-width: 60px;
+  padding: 0.3rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  background-color: #28a745;
+}
+
+.name-form button:hover {
+  background-color: #1e7e34;
+}
+
+#name-error {
+  margin-top: 0.25rem;
+  min-height: 1.25rem;
+}
+
+/* Focus Timer */
+#focus-timer {
+  text-align: center;
+}
+
+#focus-timer h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: color var(--transition);
+}
+
+#timer-display {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0.5rem 0 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pomodoro preset buttons */
+.timer-presets {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.preset-btn {
+  min-height: 36px;
+  min-width: auto;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 999px;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.preset-btn.active {
+  background-color: #e74c3c;
+  color: #fff;
+  border-color: #e74c3c;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+}
+
+.preset-btn.active:hover {
+  background-color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* Short break active color */
+.preset-btn[data-minutes="5"].active {
+  background-color: #27ae60;
+  border-color: #27ae60;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.4);
+}
+
+.preset-btn[data-minutes="5"].active:hover {
+  background-color: #1e8449;
+  border-color: #1e8449;
+}
+
+/* Long break active color */
+.preset-btn[data-minutes="15"].active {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  box-shadow: 0 2px 8px rgba(41, 128, 185, 0.4);
+}
+
+.preset-btn[data-minutes="15"].active:hover {
+  background-color: #1f6391;
+  border-color: #1f6391;
+}
+
+/* Duration input row */
+.timer-duration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.timer-duration label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.timer-duration input[type="number"] {
+  width: 70px;
+  text-align: center;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.timer-duration #timer-set {
+  min-height: 36px;
+  min-width: 50px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  background-color: #17a2b8;
+}
+
+.timer-duration #timer-set:hover {
+  background-color: #138496;
+}
+
+#timer-set-error {
+  display: block;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  min-height: 1.25rem;
+}
+
+.timer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.timer-controls button {
+  flex: 1 1 auto;
+  min-width: 80px;
+}
+
+/* Todo List */
+#todo-list h2,
+#quick-links h2 {
+  font-size: 1.25rem;
+  margin: 0 0 1rem 0;
+}
+
+/* Todo header with sort control */
+.todo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.todo-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.todo-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.todo-sort label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.todo-sort select {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.todo-sort select:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+#todo-form,
+#links-form {
+  margin-bottom: 1rem;
+}
+
+#todo-list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  min-height: 44px;
+  flex-wrap: wrap;
+  transition: border-color var(--transition);
+}
+
+.task-item .task-toggle {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  cursor: pointer;
+}
+
+.task-item .task-text {
+  flex: 1 1 auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.task-item button {
+  flex-shrink: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  min-width: 60px;
+}
+
+/* Quick Links */
+#links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  flex-wrap: wrap;
+  min-height: 44px;
+  transition: border-color var(--transition);
+}
+
+.link-item a,
+.link-item button {
+  flex-shrink: 0;
+}
+
+.link-item a {
+  flex: 1 1 auto;
+  text-decoration: none;
+  color: var(--link-color);
+  word-break: break-word;
+  min-width: 0;
+  transition: color var(--transition);
+}
+
+.link-item button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  min-width: 60px;
+  background-color: #dc3545;
+}
+
+.link-item button:hover {
+  background-color: #c82333;
+}
+
+/* ========================================
+   MEDIA QUERIES — RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Small devices (landscape phones, 480px and up) */
+@media (min-width: 480px) {
+  main.dashboard {
+    padding: 1.5rem;
+  }
+
+  #timer-display {
+    font-size: 4rem;
+  }
+
+  #greeting-text {
+    font-size: 1.75rem;
+  }
+
+  #time-display {
+    font-size: 2.5rem;
+  }
+
+  /* Forms can be horizontal on slightly larger screens */
+  #todo-form {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  #todo-form input {
+    flex: 1;
+  }
+
+  #todo-form button {
+    flex-shrink: 0;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  main.dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  #greeting-widget {
+    grid-column: 1 / -1;
+  }
+
+  #timer-display {
+    font-size: 5rem;
+  }
+
+  /* Forms fully horizontal */
+  #links-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  #links-form input {
+    width: 100%;
+  }
+
+  #link-label-input {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #link-label-error {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #link-url-input {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #link-url-error {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #link-add {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  #links-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .link-item {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 200px;
+  }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+  main.dashboard {
+    max-width: 1400px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    padding: 2.5rem;
+  }
+
+  section {
+    padding: 1.5rem;
+  }
+
+  #greeting-text {
+    font-size: 2rem;
+  }
+
+  #time-display {
+    font-size: 3rem;
+  }
+
+  #timer-display {
+    font-size: 6rem;
+  }
+
+  .timer-controls button {
+    min-width: 100px;
+  }
+
+  .link-item {
+    flex: 1 1 calc(33.333% - 0.5rem);
+  }
+}
+
+/* Extra large devices (large desktops, 1440px and up) */
+@media (min-width: 1440px) {
+  main.dashboard {
+    max-width: 1600px;
+    padding: 3rem;
+  }
+
+  #greeting-text {
+    font-size: 2.25rem;
+  }
+
+  #time-display {
+    font-size: 3.5rem;
+  }
+
+  #timer-display {
+    font-size: 7rem;
+  }
+}
+
+/* Ultra-wide devices (1920px and up) */
+@media (min-width: 1920px) {
+  main.dashboard {
+    max-width: 1800px;
+    padding: 3rem;
+  }
+
+  /* Prevent excessive stretching on very wide screens */
+  section {
+    max-width: 100%;
+  }
+
+  #timer-display {
+    font-size: 8rem;
+  }
+}
+
+/* Ensure no element exceeds viewport width at any breakpoint */
+@media (max-width: 320px) {
+  body {
+    min-width: 320px;
+  }
+
+  main.dashboard {
+    padding: 0.75rem;
+  }
+
+  section {
+    padding: 0.75rem;
+  }
+
+  #timer-display {
+    font-size: 2.5rem;
+  }
+
+  button {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+/* Ensure interactive controls don't overlap on any screen size */
+.task-item,
+.link-item {
+  position: relative;
+  /* Ensure flex items don't shrink below their min-content */
+  min-width: min-content;
+}
+
+/* Prevent text overflow in all containers */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Ensure forms never cause horizontal scroll */
+form,
+form > * {
+  max-width: 100%;
+}
+
+/* Accessibility: ensure focus indicators are visible */
+*:focus {
+  outline-offset: 2px;
+}
+
+/* Ensure buttons remain clickable even on smallest screens */
+@media (max-width: 359px) {
+  .task-item button,
+  .link-item button {
+    min-width: 50px;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.375rem;
+  }
+
+  .timer-controls button {
+    min-width: 70px;
+    font-size: 0.75rem;
+  }
+}
